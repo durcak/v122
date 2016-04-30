@@ -1,0 +1,13 @@
+from Turtle import Turtle
+import math
+
+turtle = Turtle('r_polygon')
+
+n = 5
+dist = 100 / n
+
+for i in range(n):
+    turtle.right(360/n)
+    turtle.forward(dist)
+
+turtle.save()
