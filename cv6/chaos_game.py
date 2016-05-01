@@ -1,0 +1,36 @@
+from PIL import Image
+from random import randint
+from math import sqrt, sin, cos, pi
+    
+
+def pil_draw(side, name, points, r, n_steps):
+    img = Image.new('RGB', (side, side), (255,255,255))
+    pixels = img.load()
+    
+    P = (side//2, side//2)
+    for i in range(n_steps):
+        A = points[randint(0,len(points)-1)]  # Select point at random
+
+        v = (A[0] - P[0], A[1] - P[1])  # Vector medzi bodmi A a P
+        sv = (v[0]*r, v[1]*r)  		# skratenie vektora v
+
+        P = (P[0]+sv[0],P[1]+sv[1])  	# posunutie bodu P o vektor sv
+        pixels[P[0], P[1]] = (0,0,0)
+
+    img.save(name + '.png')
+
+
+def n_gon(side, n, r, n_steps):
+    points = []
+    a = 270
+    for i in range(n):
+        x = side/2 + (cos(a * pi / 180) * side/2)
+        y = side/2 + (sin(a * pi / 180) * side/2)
+        points.append((x, y))
+        a += 360 / n
+
+    pil_draw(side, str(n) + 'n', points, r, n_steps)
+
+if __name__ == "__main__":
+
+    n_gon(500, 13, 2/3.0, 1000000)
