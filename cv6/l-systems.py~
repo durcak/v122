@@ -1,0 +1,123 @@
+import sys
+sys.path.append('../cv3')
+
+from Turtle import Turtle
+
+def generate_Lsystem(axiom, rule, n):
+# generates a string from the axiom
+# by given rules and iteration
+
+    for i in xrange(n):
+        axiom = "".join([rule[x] if x in rule else x for x in axiom])
+
+    return axiom
+
+def generate_Lsystem2(rules, i, n):
+    for _ in range(n):
+        i = rules(i)
+
+    return i
+
+def interpret_Lsytem2(path, forward=7, angle=60, filename=''):
+# goes through the path and draws 
+
+    turtle = Turtle(filename)
+    turtle.left(90)
+    states = []
+    instr  = { 'A' : ['forward', forward],
+               'F' : ['forward', forward],
+               'B' : ['forward', forward],
+               'x' : ['forward', 0],
+               'y' : ['forward', 0],
+               '-' : ['left', angle],
+               '+' : ['right', angle]}
+
+    for step in path:
+        if step == '[':
+            states.append(turtle.serialize())
+        elif step == ']':
+            #state = states.pop()
+            turtle.deserialize(states.pop())
+        else:
+            getattr(turtle, instr[step][0])( instr[step][1])
+
+    if filename:
+        turtle.save()
+
+    return
+
+def interpret_Lsytem(path, forward=7, angle=60, filename='', ignore = None):
+    """
+    @param turtle The turtle to guide
+    @param dist   Distance to be made with each 'forward'
+    @param angle  Angle for 'left' and 'right'
+    """
+    turtle = Turtle(filename)
+    turtle.left(180)
+
+    if ignore == None: ignore = []
+    stack = []
+
+    for c in path:
+        if c == '+':
+            turtle.right(angle)
+        elif c == '-':
+            turtle.left(angle)
+        elif c == '[':
+            stack.append(turtle.serialize())
+        elif c == ']':
+            turtle.deserialize(stack.pop())
+        elif c not in ignore:
+            turtle.forward(forward)
+
+    if filename:
+        turtle.save()
+
+    return
+
+
+if __name__ == '__main__':
+
+    
+    path  = generate_Lsystem('F--F--F', {'F':'F+F--F+F'}, 4)
+    interpret_Lsytem(path, forward=3, angle=60, filename='koch')
+
+    path  = generate_Lsystem('A', {'A':'B-A-B', 'B':'A+B+A'}, 8)
+    interpret_Lsytem(path, forward=1, angle=60, filename='sierpinski')
+
+    path = generate_Lsystem('x', {'x':'-yF+xFx+Fy-',
+                                  'y':'+xF-yFy-Fx+'}, 5)
+    interpret_Lsytem(path, angle=90, filename='hilbert')
+
+    path = generate_Lsystem( 'A', {'A': 'F[+A]-A',
+                                   'F': 'FF'}, 7)
+    interpret_Lsytem( path, forward=2, angle=45, filename='basic_tree')
+
+
+    path = generate_Lsystem('A', {'A':'F-[[A]+A]+F[+FA]-A',
+                                  'F':'FF'}, 5)
+    interpret_Lsytem( path, angle=26, filename='tree')
+    
+    path = generate_Lsystem('A', {'A':'-A++B',
+                                  'B':'A--B+'}, 10)
+    interpret_Lsytem( path, angle=45, filename='dragon')
+    
+
+    path = generate_Lsystem('F', {'F':'F[+F]F[-F]F'}, 4)
+    interpret_Lsytem(path, angle=25.7, filename='weed')
+
+    path = generate_Lsystem('F',{'F':'FF+[+F-F-F]-[-F+F+F]'},4)
+    interpret_Lsytem(path, angle=25, filename='simple_bush')
+
+    path = generate_Lsystem('F-F-F-F',{'F': 'F+FF-FF-F-F+F+FF-F-F+F+FF+FF-F'},2)
+    interpret_Lsytem(path, forward=10, angle=90, filename='koch_island')
+
+    path = generate_Lsystem('A',{'A': 'A-B--B+A++AA+B-',
+                                 'B': '+A-BB--B-A++A+B'},4)
+    interpret_Lsytem(path,forward=14, angle=60, filename='gosper')
+
+    path = generate_Lsystem('F----F----F----F----F',{'F': 'F----F----F----------F++F----F'},3)
+    interpret_Lsytem(path, forward=20, angle=18, filename='pentaflake')
+
+
+   
