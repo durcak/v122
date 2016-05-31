@@ -19,8 +19,6 @@ def dfs(x,y,size):
         if next not in wall or abs(x-next[0]) == abs(y-next[1]) : continue     
         if visited[next]: continue
 
-        print('on pos',cur,'to',next)
-
 	#natoto niesom hrdy
         if i > 0:
             wall[cur][2] = 0   
