@@ -19,8 +19,6 @@ def dfs(x,y,size):
         if next not in wall or abs(x-next[0]) == abs(y-next[1]) : continue     
         if visited[next]: continue
 
-        print('on pos',cur,'to',next)
-
 	#natoto niesom hrdy
         if i > 0:
             wall[cur][2] = 0   
@@ -64,8 +62,9 @@ def drawmaze(filename,size):
     svg.save()
 
 if __name__ == "__main__":
+    size = 20
     wallinit(size)
-    dfs(0,0,15)
+    dfs(0,0,size)
 
-    drawmaze("out.svg",15)
+    drawmaze("out2.svg",size)
 

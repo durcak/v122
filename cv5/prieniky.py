@@ -18,13 +18,17 @@ def render(lines, points):
 
 def rand_lines_generator():
 
-    x1 = random.randint(0 + 20, size - size/2)
-    y1 = random.randint(0 + 20, size - size/2)
+    x1 = random.randint(0 + size/5, size - size/2)
+    y1 = random.randint(0 + size/5, size - size/2)
 
-    x2 = random.randint(0 + 20, size - size/2)
-    y2 = random.randint(0 + 20, size - size/2)
+    #x2 = random.randint(0 + 20, size - size/2)
+    #y2 = random.randint(0 + 20, size - size/2)
+     
+    angle = random.randint(0,360)
+    x2 = cos(angle * 180/pi) * size/5
+    y2 = sin(angle * 180/pi) * size/5
 
-    return ((x1,y1),(x2,y2))
+    return ((x1,y1),(x1+x2,y1+y2))
 
 def intersection(line1, line2):
 
